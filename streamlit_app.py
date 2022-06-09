@@ -4,10 +4,7 @@ import requests
 import snowflake.connector
 from urllib.error import URLError
 
-def get_fruit_load_list():
-  with mycnx.cursor() as my_cur:
-    my_cur.execute("select * from fruit_load_list")
-    return my_cur.fetchall()
+
 
 streamlit.title('My Parents New Healthy Diner')
 
@@ -40,8 +37,12 @@ try:
     streamlit.dataframe(fruityvice_normalized)
 except URLError as e:
   streamlit.error()
-    
-streamlit.stop
+ 
+streamlit.header("The fruit load list contains:")
+def get_fruit_load_list():
+  with mycnx.cursor() as my_cur:
+    my_cur.execute("select * from fruit_load_list")
+    return my_cur.fetchall()
 
 if streamlit.button('Get Fruit Load List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
